@@ -15,3 +15,9 @@ El objeto "view" es el encargado de actualizar la vista cuando el estado del jue
 
 1º - Crear la estructura del HTML y conseguir que se visualice el tablero, las imágenes de tocado ("hit")/ fuera("miss"), los mensajes y el formulario para introducir la jugada con CSS.
 
+2º Organizar el proyecto en objetos (POO) con responsabilidades separadas e implementar cada uno de ellos. Serán 3:
+  - View
+  - Model
+  - Controler
+
+3º Implementar el objeto "view".
