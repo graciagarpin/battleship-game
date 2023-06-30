@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Battleship</title>
-  <style>
-    body {
-      background-color: black;
-    }
-  </style>
-</head>
-<body>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Battleship</title>
+    <style>
+      body {
+        background-color: black;
+      }
+
+      div#board {
+        position: relative;
+        width: 1024px;
+        height: 863px;
+        margin: auto;
+        background: url('./images/board.jpg') no-repeat;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="board"></div>
+    <script src="main.js"></script>
+  </body>
 </html>
