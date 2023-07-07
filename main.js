@@ -28,12 +28,17 @@ var model = {
       var index = ship.locations.indexOf(guess);
       if (index >= 0) {
         ship.hits[index] = 'hit';
+        view.displayHit(guess);
+        view.displayMessage('HIT');
         if (this.isSunk(ship)) {
+          view.displayMessage('You sank my battleship');
           this.shipsSunk++;
         }
         return true;
       }
     }
+    view.displayMiss(guess);
+    view.displayMessage('You missed');
     return false;
   },
 
@@ -65,3 +70,4 @@ model.fire('24');
 model.fire('44');
 model.fire('12');
 model.fire('11');
+model.fire('10');
