@@ -19,5 +19,3 @@ El objeto "view" es el encargado de actualizar la vista cuando el estado del jue
   - View
   - Model
   - Controler
-
-3º Implementar el objeto "view".

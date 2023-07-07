@@ -12,6 +12,19 @@ var view = {
     cell.setAttribute('class', 'miss');
   },
 };
+var model = {
+  boardSize: 7,
+  numShips: 3,
+  shipsSunk: 0,
+  shipLength: 3,
+  ships: [
+  
+    { locations: ["06", "16", "26"], hits: ['', '', ''] },
+    { locations: ["24", "34", "44"], hits: ['', '', ''] },
+    { locations: ["10", "11", "12"], hits: ['', '', ''] },
+  ]
+};
+
 
 //Test:
 view.displayMiss('00');
