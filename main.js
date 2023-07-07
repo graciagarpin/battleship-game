@@ -52,6 +52,38 @@ var model = {
   },
 };
 
+var controller = {
+  guesses: 0,
+
+  processGuess: function (guess) {},
+};
+
+function parseGuess(guess) {
+  var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+
+  if (guess === null || guess.length !== 2) {
+    alert('Ooops, please enter a letter and a number on the board.');
+  } else {
+    var firstChar = guess.charAt(0);
+    var row = alphabet.indexOf(firstChar);
+    var column = guess.charAt(1);
+
+    if (isNaN(row) || isNaN(column)) {
+      alert("Ooops, isn't on the board.");
+    } else if (
+      row < 0 ||
+      row >= model.boardSize ||
+      column < 0 ||
+      column >= model.boardSize
+    ) {
+      alert('Ooops, that-s off the board.');
+    }else {
+      return row + column;
+    }
+    return null;
+  }
+}
+
 //View test:
 // view.displayMiss('00');
 // view.displayHit('34');
@@ -61,13 +93,20 @@ var model = {
 // view.displayHit('26');
 
 // Fire test:
-model.fire('53');
-model.fire('06');
-model.fire('16');
-model.fire('26');
-model.fire('34');
-model.fire('24');
-model.fire('44');
-model.fire('12');
-model.fire('11');
-model.fire('10');
+// model.fire('53');
+// model.fire('06');
+// model.fire('16');
+// model.fire('26');
+// model.fire('34');
+// model.fire('24');
+// model.fire('44');
+// model.fire('12');
+// model.fire('11');
+// model.fire('10');
+
+// Parse guess test:
+console.log(parseGuess("A0"));
+console.log(parseGuess("B6"));
+console.log(parseGuess("G3"));
+console.log(parseGuess("H0"));
+console.log(parseGuess("A7"));
