@@ -55,7 +55,7 @@ var model = {
     var locations;
     for (var i = 0; i < this.numShips; i++) {
       do {
-        locations = this.generateShip();
+        locations = this.generateShip(); // locations randomly generated
       } while (this.collision(locations)); // true
       this.ships[i].locations = locations;
     }
@@ -109,13 +109,16 @@ var controller = {
 
   processGuess: function (guess) {
     var location = parseGuess(guess);
-    if (location) {
-      this.guesses++;
-      var hit = model.fire(location);
-      if (hit && model.shipsSunk === model.numShips) {
-        view.displayMessage(
-          'You sank all my battleships, in ' + this.guesses + ' guesses'
-        );
+    // Para resolver el bug de hacer guesses++ cuando repites localización: if no se repite localización en la guess, entonces pasar al if(location) y hacer guesses++.
+    if (isNonRepeatingHitAttempt(location)) {
+      if (location) {
+        this.guesses++;
+        var hit = model.fire(location);
+        if (hit && model.shipsSunk === model.numShips) {
+          view.displayMessage(
+            'You sank all my battleships, in ' + this.guesses + ' guesses'
+          );
+        }
       }
     }
   },
@@ -145,6 +148,37 @@ function parseGuess(guess) {
     }
     return null;
   }
+}
+
+// dos opciones para resolver el bug: una resuelve repetir guess de hit y la otra resuelve el repetir una guess tanto de hit como de miss.
+
+function isNonRepeatingHitAttempt(attempt) {
+  // sirve para no dejar que procese ni contabilice una guess que ya ha sido un hit.
+  // hay que iterar por las localizaciones, ver si está y si es así, comprobar si además está ya hit.
+  // sms: "Ya has atacado antes en este punto, prueba con otro distinto".
+  for (var i = 0; i < model.numShips; i++) {
+    var ship = model.ships[i];
+    var indexAttempt = ship.locations.indexOf(attempt);
+
+    if (indexAttempt >= 0) {
+      // la localización del attempt está en el array
+      var hit = ship.hits[indexAttempt];
+      if (hit !== 'hit') {
+        return true;
+      } else {
+        view.displayMessage(
+          'You have already attacked at this point, try a different one'
+        );
+        return false;
+      }
+    }
+  }
+}
+
+function inNonRepetingAttempt(location) {
+  // sirve para no dejar que procese ni contabilice una guess que ya ha sido hit o miss.
+  // para ello tengo que ir guardando las location que entran en un array.
+  var locations = [];
 }
 
 function init() {
