@@ -22,6 +22,7 @@ var model = {
     { locations: [0, 0, 0], hits: ['', '', ''] },
     { locations: [0, 0, 0], hits: ['', '', ''] },
   ],
+  
   fire: function (guess) {
     for (var i = 0; i < this.numShips; i++) {
       var ship = this.ships[i];
@@ -109,7 +110,7 @@ var controller = {
 
   processGuess: function (guess) {
     var location = parseGuess(guess);
-    // Para resolver el bug de hacer guesses++ cuando repites localización: if no se repite localización en la guess, entonces pasar al if(location) y hacer guesses++.
+
     if (isNonRepeatingHitAttempt(location)) {
       if (location) {
         this.guesses++;
@@ -150,35 +151,41 @@ function parseGuess(guess) {
   }
 }
 
-// dos opciones para resolver el bug: una resuelve repetir guess de hit y la otra resuelve el repetir una guess tanto de hit como de miss.
+// Resuelto el Bug 1: no dejar que procese ni contabilice (guesses++) una guess que ya ha sido un hit.
 
 function isNonRepeatingHitAttempt(attempt) {
   // sirve para no dejar que procese ni contabilice una guess que ya ha sido un hit.
-  // hay que iterar por las localizaciones, ver si está y si es así, comprobar si además está ya hit.
-  // sms: "Ya has atacado antes en este punto, prueba con otro distinto".
+  // hay que iterar por las localizaciones, ver si está entre ellas y si es así, comprobar si además está marcado como hit.
+  // display: "Ya has atacado antes en este punto, prueba con otro distinto".
   for (var i = 0; i < model.numShips; i++) {
     var ship = model.ships[i];
     var indexAttempt = ship.locations.indexOf(attempt);
 
     if (indexAttempt >= 0) {
-      // la localización del attempt está en el array
+      // la localización del attempt sí está en el array de locations de algún barco
       var hit = ship.hits[indexAttempt];
       if (hit !== 'hit') {
+        // y no está marcado el hit porque aún no fue tocado
         return true;
       } else {
+        // si está marcado el hit porque ya fue tocado
         view.displayMessage(
           'You have already attacked at this point, try a different one'
         );
         return false;
       }
+    } else {
+      // -1 ---> la localización no está en ships.
+      // Resuelto el bug 2: Facilitamos que pueda procesar también un miss devolviendo true para que el código arriba pueda continuar.
+      return true;
     }
   }
 }
 
+// Posible mejora a futuro que no penalice repetir un hit ni tampoco un miss (que no permita guesses++ en caso de cualquier repetición):
 function inNonRepetingAttempt(location) {
   // sirve para no dejar que procese ni contabilice una guess que ya ha sido hit o miss.
-  // para ello tengo que ir guardando las location que entran en un array.
-  var locations = [];
+  // para ello debería almacenar en un array los misses, para poder saber cuándo se repite una location que fue miss (y seguir el mismo proceso que con un hit repetido).
 }
 
 function init() {
