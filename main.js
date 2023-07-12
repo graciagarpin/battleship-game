@@ -11,6 +11,10 @@ var view = {
     var cell = document.getElementById(location);
     cell.setAttribute('class', 'miss');
   },
+  displayGuesses: function (guesses) {
+    var counterGuesses = document.getElementById('counterGuesses');
+    counterGuesses.innerHTML = guesses;
+  },
 };
 var model = {
   boardSize: 7,
@@ -22,7 +26,7 @@ var model = {
     { locations: [0, 0, 0], hits: ['', '', ''] },
     { locations: [0, 0, 0], hits: ['', '', ''] },
   ],
-  
+
   fire: function (guess) {
     for (var i = 0; i < this.numShips; i++) {
       var ship = this.ships[i];
@@ -115,6 +119,7 @@ var controller = {
       if (location) {
         this.guesses++;
         var hit = model.fire(location);
+        view.displayGuesses('Guesses: ' + this.guesses);
         if (hit && model.shipsSunk === model.numShips) {
           view.displayMessage(
             'You sank all my battleships, in ' + this.guesses + ' guesses'
